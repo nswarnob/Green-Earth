@@ -64,12 +64,13 @@ const displayPlanByCategory = (categorisedPlants) => {
                         <img src="${plant.image}" class="h-[200px] w-[300px] rounded-sm object-cover">
                         </div>
                         <!-- Title -->
-                        <h2 class="text-sm font-semibold text-gray-800 plant-title">${plant.name}</h2>
+                        <h2 class="text-sm font-semibold text-gray-800 plant-title" >${plant.name}</h2>
 
                         <!-- Description -->
                         <p class="text-gray-500 text-xs">
                             ${plant.description}
                         </p>
+                        
 
                         <!-- Tag + Price -->
                         <div class="flex items-center justify-between">
@@ -87,6 +88,21 @@ const displayPlanByCategory = (categorisedPlants) => {
                     </div>
                 </div>
         `
+       
+
+
+   const namebtns = document.querySelectorAll(".plant-title")
+        namebtns.forEach(btn =>{
+         btn.addEventListener("click", ()=>{
+          plantDetailsLoad(plant.id);
+
+         })
+
+
+        })
+      
+
+
     })
 
 
@@ -149,7 +165,39 @@ const updateTotal =()=> {
     totalPriceEl.innerText = total;
 }
 
+// by clicking name of trees get more details of
+const plantDetailsLoad=(plantId)=>{
+    fetch(`https://openapi.programming-hero.com/api/plant/${plantId}`)
+    .then(res=>res.json())
+    .then(data=>{
+        console.log(data)
+        displayPlantDetails(data.plants)
+    })
+} 
+
+const displayPlantDetails = (plant) => {
+    console.log(plant)
+  const modal = document.getElementById("my_modal_5");
+  console.log(modal);
+modal.innerHTML =`  <div class="modal-box">
+    <img src="${plant.image}" class="h-full w-full rounded-sm">
+    <h3 id="modalTitle" class="text-lg font-bold">${plant.name}</h3>
+    <p class="py-4" id="modalDescription">${plant.description}</p>
+  </div>`
+   modal.showModal(); 
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.close();
+    }
+  });
+
+};
+
+
 
 // function calling here 
+
 loadCategory();
 displayPlanByAll();
+
