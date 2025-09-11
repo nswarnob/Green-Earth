@@ -54,9 +54,12 @@ const loadPlanByCategory = (categoryId) => {
 
 const displayPlanByCategory = (categorisedPlants) => {
     cardContainer.innerHTML = ' ';
+
     categorisedPlants.forEach(plant => {
-        cardContainer.innerHTML += `
-         <div class="details max-w-xs bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+        const plantCard = document.createElement('div');
+        plantCard.className = "details max-w-xs bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100";
+
+        plantCard.innerHTML += `
                     <!-- Content -->
                     <div class="p-4 space-y-3">
                         <!-- Image Placeholder -->
@@ -86,26 +89,15 @@ const displayPlanByCategory = (categorisedPlants) => {
                             Add to Cart
                         </button>
                     </div>
-                </div>
         `
-       
 
-
-   const namebtns = document.querySelectorAll(".plant-title")
-        namebtns.forEach(btn =>{
-         btn.addEventListener("click", ()=>{
-          plantDetailsLoad(plant.id);
-
-         })
-
-
-        })
-      
-
-
+        // Click listener for modal — pass full plant object
+        plantCard.querySelector('.plant-title').addEventListener('click', () => {
+            displayPlantDetails(plant);
     })
 
-
+ cardContainer.appendChild(plantCard);
+})
 }
 
 // All buttons feature and by default 
@@ -171,19 +163,19 @@ const plantDetailsLoad=(plantId)=>{
     .then(res=>res.json())
     .then(data=>{
         console.log(data)
-        displayPlantDetails(data.plants)
+        displayPlantDetails(data.plant)
     })
 } 
 
-const displayPlantDetails = (plant) => {
-    console.log(plant)
+const displayPlantDetails = (plant) => {    
   const modal = document.getElementById("my_modal_5");
-  console.log(modal);
-modal.innerHTML =`  <div class="modal-box">
+  
+modal.innerHTML =`<div class="modal-box">
     <img src="${plant.image}" class="h-full w-full rounded-sm">
     <h3 id="modalTitle" class="text-lg font-bold">${plant.name}</h3>
     <p class="py-4" id="modalDescription">${plant.description}</p>
   </div>`
+
    modal.showModal(); 
 
   modal.addEventListener("click", (event) => {
